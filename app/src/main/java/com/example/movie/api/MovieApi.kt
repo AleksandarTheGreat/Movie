@@ -1,7 +1,9 @@
 package com.example.movie.api
 
+import com.example.movie.model.MovieDetails
 import com.example.movie.model.MoviesResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MovieApi {
@@ -14,4 +16,9 @@ interface MovieApi {
         @Query(value = "page") page: Int = 1,
     ): MoviesResponse
 
+    @GET("movie/{id}")
+    suspend fun fetchMovieDetailsResponse(
+        @Path("id") id: Int,
+        @Query(value = "api_key") apiKey: String = API_KEY,
+    ): MovieDetails
 }
