@@ -23,6 +23,7 @@ import androidx.navigation.NavHost
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.movie.api.MovieObject
 import com.example.movie.model.ScreenWidthType
 import com.example.movie.ui.theme.MovieTheme
@@ -59,18 +60,22 @@ class MainActivity : ComponentActivity() {
                     composable<ScreenHomeGraph> {
                         ScreenHome(
                             screenWidthType = screenWidthType,
-                            navigateToScreenDetails = {
-                                navController.navigate(ScreenDetailsGraph)
+                            navigateToScreenDetails = { id ->
+                                navController.navigate(ScreenDetailsGraph(id = id))
                             }
                         )
                     }
 
-                    composable<ScreenDetailsGraph> {
+                    composable<ScreenDetailsGraph> { backStackEntry ->
+                        val route = backStackEntry.toRoute<ScreenDetailsGraph>()
+                        val id = route.id
+
                         ScreenDetails(
                             screenWidthType = screenWidthType,
                             navigateUp = {
                                 navController.navigateUp()
-                            }
+                            },
+                            movieId = id,
                         )
                     }
                 }

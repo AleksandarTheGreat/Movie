@@ -27,6 +27,7 @@ fun ListMovies(
     modifier: Modifier = Modifier,
     movieStateList: List<Movie>,
     screenWidthType: ScreenWidthType,
+    navigateToScreenDetails: (id: Int) -> Unit,
 ) {
 
     if (screenWidthType == ScreenWidthType.NARROW) {
@@ -43,6 +44,7 @@ fun ListMovies(
                         .height(cardHeight.dp)
                         .padding(horizontal = 8.dp, vertical = 4.dp),
                     movie = movie,
+                    navigateToScreenDetails = navigateToScreenDetails,
                 )
             }
         }
@@ -61,6 +63,7 @@ fun ListMovies(
                       .fillMaxHeight()
                       .padding(all = 4.dp),
                   movie = movie,
+                  navigateToScreenDetails = navigateToScreenDetails
               )
           }
         }
@@ -73,7 +76,8 @@ private fun ListMoviesPreview() {
     MovieTheme {
         ListMovies(
             movieStateList = listOf(),
-            screenWidthType = ScreenWidthType.NARROW
+            screenWidthType = ScreenWidthType.NARROW,
+            navigateToScreenDetails = {}
         )
     }
 }

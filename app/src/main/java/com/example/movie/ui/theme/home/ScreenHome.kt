@@ -32,7 +32,7 @@ import com.example.movie.viewModel.ViewModelHome
 @Composable
 fun ScreenHome(
     modifier: Modifier = Modifier,
-    navigateToScreenDetails: () -> Unit,
+    navigateToScreenDetails: (id: Int) -> Unit,
     viewModelHome: ViewModelHome = viewModel(),
     screenWidthType: ScreenWidthType,
 ) {
@@ -65,6 +65,7 @@ fun ScreenHome(
                     screenWidthType = screenWidthType,
                     modifier = Modifier
                         .fillMaxSize(),
+                    navigateToScreenDetails = navigateToScreenDetails
                 )
             } else {
                 EmptyMovies(

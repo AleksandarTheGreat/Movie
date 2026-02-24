@@ -42,10 +42,13 @@ import kotlin.math.round
 fun CardMovieGrid(
     modifier: Modifier = Modifier,
     movie: Movie,
+    navigateToScreenDetails: (id: Int) -> Unit,
 ) {
     Card(
         modifier = modifier,
-        onClick = {},
+        onClick = {
+            navigateToScreenDetails(movie.id)
+        },
     ) {
         Box(
             modifier = Modifier
@@ -171,7 +174,8 @@ private fun CardMovieGridPreview() {
         CardMovie(
             movie = Movie(
                 0, "Preview", "Preview", false, "Preview", 0.0, 0, "Preview"
-            )
+            ),
+            navigateToScreenDetails = {}
         )
     }
 }

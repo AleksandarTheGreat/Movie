@@ -42,10 +42,13 @@ import kotlin.math.round
 fun CardMovie(
     modifier: Modifier = Modifier,
     movie: Movie,
+    navigateToScreenDetails: (id: Int) -> Unit,
 ) {
     Card(
         modifier = modifier,
-        onClick = {},
+        onClick = {
+            navigateToScreenDetails(movie.id)
+        },
     ) {
         Row(
             horizontalArrangement = Arrangement.Start,
@@ -159,7 +162,8 @@ private fun CardMoviePreview() {
         CardMovie(
             movie = Movie(
                 0, "Preview", "Preview", false, "Preview", 0.0, 0, "Preview"
-            )
+            ),
+            navigateToScreenDetails = {},
         )
     }
 }

@@ -11,10 +11,13 @@ data class MovieDetails(
     val title: String,
     val overview: String,
     val status: String,
+    val adult: Boolean,
     @SerializedName(value = "release_date")
     val releaseDate: String,
     @SerializedName(value = "backdrop_path")
     val backdropPath: String,
+    @SerializedName(value = "poster_path")
+    val posterPath: String,
     @SerializedName(value = "runtime")
     val runtime: Int,
     @SerializedName(value = "genres")
@@ -27,10 +30,28 @@ data class MovieDetails(
             title = "Default",
             overview = "Default",
             status = "Default",
+            adult = false,
             releaseDate = "",
             backdropPath = "",
+            posterPath = "",
             runtime = 0,
             listGenres = emptyList<Genre>(),
             listProductionCompanies = emptyList<ProductionCompany>()
         )
+
+    fun posterImageUrl(): String {
+        val baseUrl = "https://image.tmdb.org/t/p/w500"
+
+        if (backdropPath.isNotEmpty())
+            return "${baseUrl}${backdropPath}"
+
+        if (posterPath.isNotEmpty())
+            return "${baseUrl}${posterPath}"
+
+        return ""
+    }
+
+    fun isEmptyMovieDetails(): Boolean = (id == 0 && title == "Default" && overview == "Default" && posterPath == ""
+            && status == "Default" && releaseDate == "") && !adult && backdropPath == "" && runtime == 0 && listGenres.isEmpty() && listProductionCompanies.isEmpty()
+
 }
