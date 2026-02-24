@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.movie.api.MovieObject
+import com.example.movie.model.ScreenWidthType
 import com.example.movie.ui.theme.MovieTheme
 import com.example.movie.ui.theme.details.ScreenDetails
 import com.example.movie.ui.theme.details.ScreenDetailsGraph
@@ -45,12 +47,18 @@ class MainActivity : ComponentActivity() {
         setContent {
             MovieTheme {
                 val navController = rememberNavController()
-                val screenHeight: Int = LocalConfiguration.current.screenHeightDp
+
+                val windowSizeClass = calculateWindowSizeClass(this)
+                val screenWidthType = if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+                    ScreenWidthType.NARROW
+                } else {
+                    ScreenWidthType.WIDE
+                }
 
                 NavHost(navController, ScreenHomeGraph) {
                     composable<ScreenHomeGraph> {
                         ScreenHome(
-                            screenHeight = screenHeight,
+                            screenWidthType = screenWidthType,
                             navigateToScreenDetails = {
                                 navController.navigate(ScreenDetailsGraph)
                             }
@@ -59,6 +67,7 @@ class MainActivity : ComponentActivity() {
 
                     composable<ScreenDetailsGraph> {
                         ScreenDetails(
+                            screenWidthType = screenWidthType,
                             navigateUp = {
                                 navController.navigateUp()
                             }

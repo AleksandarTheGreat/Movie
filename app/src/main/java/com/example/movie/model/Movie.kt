@@ -2,6 +2,9 @@ package com.example.movie.model
 
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import java.util.Objects
 
 @Serializable
@@ -23,6 +26,22 @@ class Movie(
     fun posterImageUrl(): String {
         val baseUrl = "https://image.tmdb.org/t/p/w500"
         return "${baseUrl}${posterPath}"
+    }
+
+    fun readableReleaseDate(): String {
+        val parts = releaseDate.split("-")
+        val localDate: LocalDate = LocalDate.of(parts[0].toInt(), parts[1].toInt(), parts[2].toInt())
+
+        val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE dd MMM yyyy")
+        return localDate.format(dateTimeFormatter)
+    }
+
+    fun readableVoteAverage(): String {
+        var avg = String.format(Locale.ROOT, "%.2f",voteAverage)
+        if (voteAverage == 0.0)
+            avg = "0"
+
+        return avg;
     }
 
     override fun toString(): String {

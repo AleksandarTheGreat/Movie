@@ -1,7 +1,10 @@
 package com.example.movie.repository
 
 import com.example.movie.model.Movie
+import com.example.movie.model.MoviesResponse
 
 interface IRepositoryMovie {
-    suspend fun loadAll(): List<Movie>
+    suspend fun fetchPopularMoviesResponse(): MoviesResponse
+    suspend fun fetchMovieDetailsResponse():
+
 }

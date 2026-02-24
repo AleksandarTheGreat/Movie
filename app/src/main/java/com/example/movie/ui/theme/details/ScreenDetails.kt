@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.movie.model.ScreenWidthType
 import com.example.movie.ui.theme.MovieTheme
 import com.example.movie.viewModel.ViewModelDetails
 import java.util.concurrent.CountDownLatch
@@ -26,7 +27,8 @@ import java.util.concurrent.CountDownLatch
 fun ScreenDetails(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit,
-    viewModelDetails: ViewModelDetails = viewModel()
+    viewModelDetails: ViewModelDetails = viewModel(),
+    screenWidthType: ScreenWidthType,
 ) {
     Scaffold(
         topBar = {
@@ -66,7 +68,8 @@ fun ScreenDetails(
 private fun ScreenDetailsPreview() {
     MovieTheme {
         ScreenDetails(
-            navigateUp = {}
+            navigateUp = {},
+            screenWidthType = ScreenWidthType.NARROW,
         )
     }
 }

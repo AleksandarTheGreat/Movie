@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -39,7 +39,7 @@ import kotlin.math.round
 
 @SuppressLint("DefaultLocale")
 @Composable
-fun CardMovie(
+fun CardMovieGrid(
     modifier: Modifier = Modifier,
     movie: Movie,
 ) {
@@ -47,17 +47,15 @@ fun CardMovie(
         modifier = modifier,
         onClick = {},
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Start,
+        Box(
             modifier = Modifier
                 .fillMaxSize()
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .weight(1f)
+                    .zIndex(1f)
             ) {
-
                 if (movie.adult)
                     Text(
                         text = "18+",
@@ -65,7 +63,7 @@ fun CardMovie(
                         fontSize = 14.sp,
                         modifier = Modifier
                             .zIndex(2f)
-                            .padding(all = 4.dp)
+                            .padding(all = 8.dp)
                             .background(color = Color.Red, shape = CircleShape)
                             .padding(all = 2.dp)
                             .align(
@@ -85,17 +83,32 @@ fun CardMovie(
                 )
             }
 
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                Color.Black.copy(alpha = 1f), // 30% opacity
+                            )
+                        )
+                    )
+                    .zIndex(1f)
+            )
+
             Column(
-                verticalArrangement = Arrangement.Top,
+                verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(vertical = 6.dp, horizontal = 12.dp)
-                    .weight(2f)
+                    .zIndex(2f)
             ) {
                 Text(
                     text = movie.title,
                     fontSize = 18.sp,
+                    color = Color.White,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Start,
@@ -106,47 +119,46 @@ fun CardMovie(
                 if (movie.overview.isNotEmpty())
                     Text(
                         text = movie.overview,
+                        color = Color.White,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Normal,
                         maxLines = 2,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
+                            .fillMaxWidth(),
                         textAlign = TextAlign.Start,
                         overflow = TextOverflow.Ellipsis
                     )
                 else
                     Text(
                         text = "No overview :(",
+                        color = Color.White,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Normal,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
+                            .fillMaxWidth(),
                         textAlign = TextAlign.Start,
                         overflow = TextOverflow.Ellipsis
                     )
 
                 Spacer(modifier = Modifier.height(4.dp))
 
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
+                Text(
+                    text = "⭐ ${movie.readableVoteAverage()}",
+                    fontSize = 14.sp,
+                    color = Color.White,
+                    textAlign = TextAlign.Start,
                     modifier = Modifier
                         .fillMaxWidth()
-                ) {
+                )
 
-
-                    Text(
-                        text = "⭐ ${movie.readableVoteAverage()}",
-                        fontSize = 14.sp
-                    )
-                    Text(
-                        text = "\uD83D\uDCC6 ${movie.readableReleaseDate()}",
-                        fontSize = 12.sp,
-                        color = Color.Gray
-                    )
-                }
+                Text(
+                    text = "\uD83D\uDCC6 ${movie.readableReleaseDate()}",
+                    fontSize = 12.sp,
+                    color = Color.White,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
             }
         }
     }
@@ -154,7 +166,7 @@ fun CardMovie(
 
 @Preview
 @Composable
-private fun CardMoviePreview() {
+private fun CardMovieGridPreview() {
     MovieTheme {
         CardMovie(
             movie = Movie(

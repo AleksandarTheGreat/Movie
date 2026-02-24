@@ -30,12 +30,14 @@ class ViewModelHome(
 
     suspend fun loadAll() {
         withContext(Dispatchers.IO) {
-            val list = repositoryMovie.loadAll()
-            Log.d("Movies", list.toString())
-
-            withContext(Dispatchers.Main) {
-                updateMutableStateFlowMovies(list)
+            val list = try {
+                repositoryMovie.fetchPopularMoviesResponse().list
+            } catch (e: Exception) {
+                Log.d("Error" , e.toString())
+                emptyList<Movie>()
             }
+
+            updateMutableStateFlowMovies(list)
         }
     }
 

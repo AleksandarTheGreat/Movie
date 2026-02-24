@@ -68,7 +68,6 @@ dependencies {
     implementation(libs.converter.gson)
 
     implementation(libs.coil.compose)
-    implementation(libs.coil.compose.okhttp)
     implementation(libs.androidx.compose.material3.window.size.class1)
 
     implementation("androidx.compose.material:material-icons-core:1.7.8")
