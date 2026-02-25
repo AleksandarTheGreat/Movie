@@ -21,8 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.movie.model.ScreenHeightType
 import com.example.movie.model.ScreenWidthType
-import com.example.movie.ui.theme.components.home.CardMovie
 import com.example.movie.ui.theme.components.home.EmptyMovies
 import com.example.movie.ui.theme.MovieTheme
 import com.example.movie.ui.theme.components.home.ListMovies
@@ -35,6 +35,7 @@ fun ScreenHome(
     navigateToScreenDetails: (id: Int) -> Unit,
     viewModelHome: ViewModelHome = viewModel(),
     screenWidthType: ScreenWidthType,
+    screenHeightType: ScreenHeightType,
 ) {
 
     Scaffold(
@@ -63,6 +64,7 @@ fun ScreenHome(
                 ListMovies(
                     movieStateList = movieStateList,
                     screenWidthType = screenWidthType,
+                    screenHeightType = screenHeightType,
                     modifier = Modifier
                         .fillMaxSize(),
                     navigateToScreenDetails = navigateToScreenDetails
@@ -86,7 +88,8 @@ private fun ScreenHomePreview() {
     MovieTheme {
         ScreenHome(
             navigateToScreenDetails = {},
-            screenWidthType = ScreenWidthType.NARROW
+            screenWidthType = ScreenWidthType.NARROW,
+            screenHeightType = ScreenHeightType.NARROW
         )
     }
 }

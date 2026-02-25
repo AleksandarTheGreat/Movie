@@ -1,6 +1,6 @@
 package com.example.movie.model
 
-enum class ScreenWidthType {
+enum class ScreenHeightType {
     NARROW,
     WIDE,
 }

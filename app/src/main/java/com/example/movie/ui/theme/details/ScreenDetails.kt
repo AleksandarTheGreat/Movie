@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.movie.model.ScreenHeightType
 import com.example.movie.model.ScreenWidthType
 import com.example.movie.ui.theme.MovieTheme
 import com.example.movie.ui.theme.components.details.CompactMovieDetails
@@ -39,6 +40,7 @@ fun ScreenDetails(
     navigateUp: () -> Unit,
     viewModelDetails: ViewModelDetails = viewModel(),
     screenWidthType: ScreenWidthType,
+    screenHeightType: ScreenHeightType,
     movieId: Int,
 ) {
 
@@ -101,6 +103,7 @@ private fun ScreenDetailsPreview() {
         ScreenDetails(
             navigateUp = {},
             screenWidthType = ScreenWidthType.NARROW,
+            screenHeightType = ScreenHeightType.NARROW,
             movieId = 0,
         )
     }

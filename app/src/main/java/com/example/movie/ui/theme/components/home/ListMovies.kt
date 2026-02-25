@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.movie.model.Movie
+import com.example.movie.model.ScreenHeightType
 import com.example.movie.model.ScreenWidthType
 import com.example.movie.ui.theme.MovieTheme
 
@@ -27,6 +28,7 @@ fun ListMovies(
     modifier: Modifier = Modifier,
     movieStateList: List<Movie>,
     screenWidthType: ScreenWidthType,
+    screenHeightType: ScreenHeightType,
     navigateToScreenDetails: (id: Int) -> Unit,
 ) {
 
@@ -38,7 +40,7 @@ fun ListMovies(
             modifier = modifier
         ) {
             items(movieStateList, key = { it.id }) { movie ->
-                CardMovie(
+                CardMovieNarrowWidth(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(cardHeight.dp)
@@ -49,23 +51,36 @@ fun ListMovies(
             }
         }
     } else {
-
+        // calculate height as well
         val cardWidth = LocalConfiguration.current.screenWidthDp / 3
 
         LazyHorizontalGrid(
             rows = GridCells.Fixed(2),
             modifier = modifier
         ) {
-          items(movieStateList, key = { it.id }) { movie ->
-              CardMovieGrid(
-                  modifier = Modifier
-                      .width(cardWidth.dp)
-                      .fillMaxHeight()
-                      .padding(all = 4.dp),
-                  movie = movie,
-                  navigateToScreenDetails = navigateToScreenDetails
-              )
-          }
+            if (screenHeightType == ScreenHeightType.WIDE) {
+                items(movieStateList, key = { it.id }) { movie ->
+                    CardMovieGridWideHeight(
+                        modifier = Modifier
+                            .width(cardWidth.dp)
+                            .fillMaxHeight()
+                            .padding(all = 4.dp),
+                        movie = movie,
+                        navigateToScreenDetails = navigateToScreenDetails
+                    )
+                }
+            } else {
+                items(movieStateList, key = { it.id }) { movie ->
+                    CardMovieGridNarrowHeight(
+                        modifier = Modifier
+                            .width(cardWidth.dp)
+                            .fillMaxHeight()
+                            .padding(all = 4.dp),
+                        movie = movie,
+                        navigateToScreenDetails = navigateToScreenDetails
+                    )
+                }
+            }
         }
     }
 }
@@ -77,6 +92,7 @@ private fun ListMoviesPreview() {
         ListMovies(
             movieStateList = listOf(),
             screenWidthType = ScreenWidthType.NARROW,
+            screenHeightType = ScreenHeightType.NARROW,
             navigateToScreenDetails = {}
         )
     }

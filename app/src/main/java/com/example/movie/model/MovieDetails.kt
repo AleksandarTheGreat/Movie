@@ -4,6 +4,8 @@ import com.example.movie.model.movieDetails.Genre
 import com.example.movie.model.movieDetails.ProductionCompany
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Serializable
@@ -59,6 +61,14 @@ data class MovieDetails(
             return "${baseUrl}${posterPath}"
 
         return ""
+    }
+
+    fun readableReleaseDate(): String {
+        val parts = releaseDate.split("-")
+        val localDate: LocalDate = LocalDate.of(parts[0].toInt(), parts[1].toInt(), parts[2].toInt())
+
+        val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE dd MMM yyyy")
+        return localDate.format(dateTimeFormatter)
     }
 
     fun voteAverageRoundedTo1Decimal(): String = String.format(Locale.ROOT, "%.1f", voteAverage)
