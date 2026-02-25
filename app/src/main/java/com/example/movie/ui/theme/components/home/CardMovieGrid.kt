@@ -146,7 +146,7 @@ fun CardMovieGrid(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "⭐ ${movie.readableVoteAverage()}",
+                    text = "⭐ ${movie.voteAverageRoundedTo1Decimal()}",
                     fontSize = 14.sp,
                     color = Color.White,
                     textAlign = TextAlign.Start,

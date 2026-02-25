@@ -4,6 +4,7 @@ import com.example.movie.model.movieDetails.Genre
 import com.example.movie.model.movieDetails.ProductionCompany
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
+import java.util.Locale
 
 @Serializable
 data class MovieDetails(
@@ -15,15 +16,20 @@ data class MovieDetails(
     @SerializedName(value = "release_date")
     val releaseDate: String,
     @SerializedName(value = "backdrop_path")
-    val backdropPath: String,
+    val backdropPath: String?,
     @SerializedName(value = "poster_path")
-    val posterPath: String,
+    val posterPath: String?,
     @SerializedName(value = "runtime")
     val runtime: Int,
     @SerializedName(value = "genres")
     val listGenres: List<Genre>,
     @SerializedName(value = "production_companies")
     val listProductionCompanies: List<ProductionCompany>,
+    @SerializedName(value = "vote_average")
+    val voteAverage: Double,
+    @SerializedName(value = "vote_count")
+    val voteCount: Int,
+
 ) {
     constructor() : this(
             id = 0,
@@ -36,22 +42,29 @@ data class MovieDetails(
             posterPath = "",
             runtime = 0,
             listGenres = emptyList<Genre>(),
-            listProductionCompanies = emptyList<ProductionCompany>()
+            listProductionCompanies = emptyList<ProductionCompany>(),
+            voteAverage = 0.0,
+            voteCount = 0,
         )
 
     fun posterImageUrl(): String {
         val baseUrl = "https://image.tmdb.org/t/p/w500"
 
+        if (backdropPath == null) return ""
         if (backdropPath.isNotEmpty())
             return "${baseUrl}${backdropPath}"
 
+        if (posterPath == null) return ""
         if (posterPath.isNotEmpty())
             return "${baseUrl}${posterPath}"
 
         return ""
     }
 
+    fun voteAverageRoundedTo1Decimal(): String = String.format(Locale.ROOT, "%.1f", voteAverage)
+
     fun isEmptyMovieDetails(): Boolean = (id == 0 && title == "Default" && overview == "Default" && posterPath == ""
             && status == "Default" && releaseDate == "") && !adult && backdropPath == "" && runtime == 0 && listGenres.isEmpty() && listProductionCompanies.isEmpty()
+            && voteAverage == 0.0 && voteCount == 0
 
 }

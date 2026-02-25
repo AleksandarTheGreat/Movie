@@ -9,7 +9,7 @@ import java.util.Objects
 class ProductionCompany(
     val id: Int,
     @SerializedName(value = "logo_path")
-    val logoPath: String,
+    val logoPath: String?,
     val name: String,
     @SerializedName(value = "origin_country")
     val originCountry: String,
@@ -17,6 +17,7 @@ class ProductionCompany(
 
     fun logoUrl(): String {
         val baseUrl = "https://image.tmdb.org/t/p/w500"
+        if (logoPath == null) return ""
         return "${baseUrl}${logoPath}"
     }
 

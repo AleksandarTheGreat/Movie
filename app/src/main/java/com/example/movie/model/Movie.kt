@@ -36,8 +36,8 @@ class Movie(
         return localDate.format(dateTimeFormatter)
     }
 
-    fun readableVoteAverage(): String {
-        var avg = String.format(Locale.ROOT, "%.2f",voteAverage)
+    fun voteAverageRoundedTo1Decimal(): String {
+        var avg = String.format(Locale.ROOT, "%.1f",voteAverage)
         if (voteAverage == 0.0)
             avg = "0"
 

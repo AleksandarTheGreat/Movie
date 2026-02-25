@@ -141,7 +141,7 @@ fun CardMovie(
 
 
                     Text(
-                        text = "⭐ ${movie.readableVoteAverage()}",
+                        text = "⭐ ${movie.voteAverageRoundedTo1Decimal()}",
                         fontSize = 14.sp
                     )
                     Text(
