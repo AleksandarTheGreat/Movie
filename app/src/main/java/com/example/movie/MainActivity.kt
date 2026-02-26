@@ -75,6 +75,9 @@ class MainActivity : ComponentActivity() {
                             screenHeightType = screenHeightType,
                             navigateUp = {
                                 navController.navigateUp()
+                            },
+                            navigateToScreenDetails = { id ->
+                                navController.navigate(ScreenDetailsGraph(id = id))
                             }
                         )
                     }

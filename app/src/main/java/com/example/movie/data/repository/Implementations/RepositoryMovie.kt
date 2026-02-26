@@ -37,4 +37,8 @@ class RepositoryMovie(
         movieDao.delete(movieFavorite)
     }
 
+    override suspend fun exists(id: Int): Boolean {
+        return movieDao.exists(id)
+    }
+
 }

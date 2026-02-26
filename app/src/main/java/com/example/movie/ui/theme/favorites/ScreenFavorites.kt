@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
@@ -42,6 +44,7 @@ import com.example.movie.data.model.MovieFavorite
 import com.example.movie.data.model.ScreenHeightType
 import com.example.movie.data.model.ScreenWidthType
 import com.example.movie.ui.theme.MovieTheme
+import com.example.movie.ui.theme.components.favorites.EmptyMovieFavorites
 import com.example.movie.ui.theme.viewModel.ViewModelFavorites
 import com.example.movie.ui.theme.viewModel.ViewModelFavoritesFactory
 
@@ -90,11 +93,20 @@ fun ScreenFavorites(
                     .padding(innerPadding)
             ) {
                 items(movieFavorites, key = { it.id }) { movieFavorite ->
-                    CardMovieFavorite(context, movieFavorite)
+                    CardMovieFavorite(
+                        context = context,
+                        movieFavorite = movieFavorite,
+                        navigateToScreenDetails = navigateToScreenDetails
+                    )
                 }
             }
         } else {
-
+            EmptyMovieFavorites(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(all = 36.dp)
+            )
         }
     }
 }
@@ -102,11 +114,12 @@ fun ScreenFavorites(
 @Composable
 private fun CardMovieFavorite(
     context: Context,
-    movieFavorite: MovieFavorite
+    movieFavorite: MovieFavorite,
+    navigateToScreenDetails: (id: Int) -> Unit,
 ) {
     Card(
         onClick = {
-            Toast.makeText(context, "Not ready yet", Toast.LENGTH_SHORT).show()
+            navigateToScreenDetails(movieFavorite.id)
         },
         modifier = Modifier
             .fillMaxWidth()

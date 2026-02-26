@@ -35,14 +35,14 @@ fun EmptyMovieFavorites(
         )
 
         Text(
-            text = "Oops, No movies loaded",
+            text = "Oops, No Favorites!",
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
         )
 
         Text(
-            text = "Looks like something went wrong. Try closing and reopening the application or idk something man...",
+            text = "It seems like you do not have any favorites added, to add go to screen details and heart em <3",
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal,
             textAlign = TextAlign.Center,

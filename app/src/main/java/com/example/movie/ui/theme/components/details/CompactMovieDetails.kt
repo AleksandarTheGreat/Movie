@@ -65,6 +65,10 @@ fun CompactMovieDetails(
 ) {
     val context = LocalContext.current
 
+    LaunchedEffect(Unit) {
+        viewModelDetails.checkIfMovieExistsInFavorites(movieDetails.id)
+    }
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Top,
@@ -117,8 +121,8 @@ fun CompactMovieDetails(
 @Composable
 private fun HeaderOverviewWithHeart(subtitle: String, movieDetails: MovieDetails, viewModelDetails: ViewModelDetails) {
 
-    // Read from the viewModel the state here.
-    var isLikedState by rememberSaveable { mutableStateOf(false) }
+    val movieExistsState by viewModelDetails.immutableStateFlowMovieExists.collectAsStateWithLifecycle()
+    var movieExists = movieExistsState
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -133,14 +137,14 @@ private fun HeaderOverviewWithHeart(subtitle: String, movieDetails: MovieDetails
                 .padding(horizontal = 12.dp, vertical = 4.dp)
         )
 
-        val imageRes = if (isLikedState) R.drawable.ic_favorite_filled
+        val imageRes = if (movieExistsState) R.drawable.ic_favorite_filled
         else R.drawable.ic_favorite_border
 
         Image(
             modifier = Modifier
                 .padding(horizontal = 12.dp, vertical = 4.dp)
                 .clickable {
-                    isLikedState = !isLikedState
+                    movieExists = !movieExists
                     val movieFavorite = MovieFavorite(
                         id = movieDetails.id,
                         title = movieDetails.title,
@@ -148,7 +152,7 @@ private fun HeaderOverviewWithHeart(subtitle: String, movieDetails: MovieDetails
                         posterPath = movieDetails.posterPath ?: ""
                     )
 
-                    viewModelDetails.toggleFavorite(movieFavorite, isLikedState)
+                    viewModelDetails.toggleFavorite(movieFavorite, movieExists)
                 },
             painter = painterResource(imageRes),
             contentDescription = "Heart image description and stuff"

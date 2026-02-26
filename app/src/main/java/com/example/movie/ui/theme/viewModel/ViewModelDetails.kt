@@ -28,12 +28,19 @@ class ViewModelDetails(
     private val mutableStateFlowMovieDetails: MutableStateFlow<MovieDetails> = MutableStateFlow(MovieDetails())
     val immutableStateFlowMovieDetails = mutableStateFlowMovieDetails.asStateFlow()
 
+    private val mutableStateFlowMovieExists: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val immutableStateFlowMovieExists = mutableStateFlowMovieExists.asStateFlow()
+
     init {
         Log.d("Tag", "ViewModelDetails initialized")
     }
 
     fun updateMutableStateFlowMovieDetailsValue(movieDetails: MovieDetails){
         mutableStateFlowMovieDetails.update { movieDetails }
+    }
+
+    fun updateMutableStateFlowMovieExistsValue(exists: Boolean) {
+        mutableStateFlowMovieExists.update { exists }
     }
 
     suspend fun fetchMovieDetails(id: Int) {
@@ -53,8 +60,10 @@ class ViewModelDetails(
         viewModelScope.launch {
             if (isLikedState) {
                 insertMovieFavorite(movieFavorite)
+                updateMutableStateFlowMovieExistsValue(true)
             } else {
                 deleteMovieFavorite(movieFavorite)
+                updateMutableStateFlowMovieExistsValue(false)
             }
         }
     }
@@ -68,6 +77,13 @@ class ViewModelDetails(
     suspend fun deleteMovieFavorite(movieFavorite: MovieFavorite) {
         withContext(Dispatchers.IO) {
             repositoryMovie.delete(movieFavorite)
+        }
+    }
+
+    fun checkIfMovieExistsInFavorites(id: Int) {
+        viewModelScope.launch {
+            val exists = repositoryMovie.exists(id)
+            updateMutableStateFlowMovieExistsValue(exists)
         }
     }
 }

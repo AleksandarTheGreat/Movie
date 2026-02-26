@@ -15,4 +15,6 @@ interface IRepositoryMovie {
     suspend fun insert(movieFavorite: MovieFavorite)
     suspend fun delete(movieFavorite: MovieFavorite)
 
+    suspend fun exists(id: Int): Boolean
+
 }
