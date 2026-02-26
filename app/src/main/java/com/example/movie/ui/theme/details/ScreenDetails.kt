@@ -1,7 +1,5 @@
 package com.example.movie.ui.theme.details
 
-import androidx.compose.foundation.gestures.rememberScrollableState
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,31 +19,32 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.movie.model.ScreenHeightType
-import com.example.movie.model.ScreenWidthType
+import com.example.movie.data.model.ScreenHeightType
+import com.example.movie.data.model.ScreenWidthType
 import com.example.movie.ui.theme.MovieTheme
 import com.example.movie.ui.theme.components.details.CompactMovieDetails
 import com.example.movie.ui.theme.components.details.EmptyMovieDetails
-import com.example.movie.viewModel.ViewModelDetails
-import java.util.concurrent.CountDownLatch
+import com.example.movie.ui.theme.viewModel.ViewModelDetails
+import com.example.movie.ui.theme.viewModel.ViewModelDetailsFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenDetails(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit,
-    viewModelDetails: ViewModelDetails = viewModel(),
+    viewModelDetails: ViewModelDetails = viewModel(factory = ViewModelDetailsFactory(LocalContext.current)),
     screenWidthType: ScreenWidthType,
     screenHeightType: ScreenHeightType,
     movieId: Int,
 ) {
 
     LaunchedEffect(Unit) {
-       viewModelDetails.loadMovieDetails(movieId)
+       viewModelDetails.fetchMovieDetails(movieId)
     }
 
     Scaffold(
@@ -89,7 +88,8 @@ fun ScreenDetails(
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState()),
-                    movieDetails = movieDetailsState
+                    movieDetails = movieDetailsState,
+                    viewModelDetails = viewModelDetails,
                 )
             }
         }

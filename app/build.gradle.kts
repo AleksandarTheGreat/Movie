@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 
     id(libs.plugins.kotlin.serialization.get().pluginId)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -69,6 +70,10 @@ dependencies {
 
     implementation(libs.coil.compose)
     implementation(libs.androidx.compose.material3.window.size.class1)
+
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx) // For Kotlin extensions and coroutine support
+    ksp(libs.androidx.room.compiler)
 
     implementation("androidx.compose.material:material-icons-core:1.7.8")
     implementation("androidx.compose.material3:material3:1.4.0")

@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.movie.model.Movie
+import com.example.movie.data.model.Movie
 import com.example.movie.ui.theme.MovieTheme
 
 @SuppressLint("DefaultLocale")

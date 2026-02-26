@@ -1,14 +1,16 @@
 package com.example.movie.ui.theme.home
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -17,26 +19,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.movie.model.ScreenHeightType
-import com.example.movie.model.ScreenWidthType
+import com.example.movie.data.model.ScreenHeightType
+import com.example.movie.data.model.ScreenWidthType
 import com.example.movie.ui.theme.components.home.EmptyMovies
 import com.example.movie.ui.theme.MovieTheme
-import com.example.movie.ui.theme.components.home.ListMovies
-import com.example.movie.viewModel.ViewModelHome
+import com.example.movie.ui.theme.components.home.ContentMovies
+import com.example.movie.ui.theme.viewModel.ViewModelHome
+import com.example.movie.ui.theme.viewModel.ViewModelHomeFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenHome(
     modifier: Modifier = Modifier,
     navigateToScreenDetails: (id: Int) -> Unit,
-    viewModelHome: ViewModelHome = viewModel(),
+    viewModelHome: ViewModelHome = viewModel(factory = ViewModelHomeFactory(LocalContext.current)),
     screenWidthType: ScreenWidthType,
     screenHeightType: ScreenHeightType,
 ) {
+    val context = LocalContext.current
+
+    val movieFavorites by viewModelHome.movieFavoritesStateFlow.collectAsStateWithLifecycle()
+    Toast.makeText(context, movieFavorites.toString(), Toast.LENGTH_SHORT).show()
 
     Scaffold(
         modifier = Modifier
@@ -44,10 +52,24 @@ fun ScreenHome(
         topBar = {
             TopAppBar(
                 title = {
-                    Text("Movie app")
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(text = "Movie app")
+                        Button(
+                            modifier = Modifier.padding(horizontal = 12.dp),
+                            onClick = {
+                                Toast.makeText(context, "Not ready yet", Toast.LENGTH_SHORT).show()
+                            }
+                        ) {
+                            Text(text = "Favorites")
+                        }
+                    }
                 }
             )
-        }
+        },
     ) { innerPadding ->
         Column(
             verticalArrangement = Arrangement.Center,
@@ -61,7 +83,7 @@ fun ScreenHome(
             // show a grid layout 2x2 horizontally
 
             if (!movieStateList.isEmpty()) {
-                ListMovies(
+                ContentMovies(
                     movieStateList = movieStateList,
                     screenWidthType = screenWidthType,
                     screenHeightType = screenHeightType,

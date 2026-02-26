@@ -1,18 +1,26 @@
-package com.example.movie.viewModel
+package com.example.movie.ui.theme.viewModel
 
+import android.content.Context
 import android.util.Log
-import androidx.compose.ui.platform.LocalGraphicsContext
 import androidx.lifecycle.ViewModel
-import com.example.movie.model.MovieDetails
-import com.example.movie.repository.Implementations.RepositoryMovie
+import androidx.lifecycle.viewModelScope
+import com.example.movie.data.model.MovieDetails
+import com.example.movie.data.model.MovieFavorite
+import com.example.movie.data.repository.Implementations.RepositoryMovie
+import com.example.movie.data.room.AppDatabase
+import com.example.movie.data.room.MovieDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 
 class ViewModelDetails(
-    private val repositoryMovie: RepositoryMovie = RepositoryMovie()
+    private val context: Context,
+    private val repositoryMovie: RepositoryMovie = RepositoryMovie(context),
 ) : ViewModel() {
 
     private val mutableStateFlowMovieDetails: MutableStateFlow<MovieDetails> = MutableStateFlow(MovieDetails())
@@ -26,7 +34,7 @@ class ViewModelDetails(
         mutableStateFlowMovieDetails.update { movieDetails }
     }
 
-    suspend fun loadMovieDetails(id: Int) {
+    suspend fun fetchMovieDetails(id: Int) {
         withContext(Dispatchers.IO) {
             val movieDetails = try {
                 repositoryMovie.fetchMovieDetailsResponse(id = id)
@@ -38,4 +46,31 @@ class ViewModelDetails(
             updateMutableStateFlowMovieDetailsValue(movieDetails)
         }
     }
+
+    suspend fun insertMovieFavorite(movieFavorite: MovieFavorite) {
+        withContext(Dispatchers.IO) {
+            repositoryMovie.insert(movieFavorite)
+        }
+    }
+
+    suspend fun deleteMovieFavorite(movieFavorite: MovieFavorite) {
+        withContext(Dispatchers.IO) {
+            repositoryMovie.delete(movieFavorite)
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

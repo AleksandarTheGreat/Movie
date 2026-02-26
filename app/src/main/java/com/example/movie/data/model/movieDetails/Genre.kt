@@ -1,4 +1,4 @@
-package com.example.movie.model.movieDetails
+package com.example.movie.data.model.movieDetails
 
 import kotlinx.serialization.Serializable
 

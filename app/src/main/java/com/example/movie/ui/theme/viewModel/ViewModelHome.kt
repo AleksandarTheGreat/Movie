@@ -1,26 +1,37 @@
-package com.example.movie.viewModel
+package com.example.movie.ui.theme.viewModel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.movie.model.Movie
-import com.example.movie.repository.Implementations.RepositoryMovie
+import com.example.movie.data.model.Movie
+import com.example.movie.data.model.MovieFavorite
+import com.example.movie.data.repository.Implementations.RepositoryMovie
+import com.example.movie.data.room.AppDatabase
+import com.example.movie.data.room.MovieDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ViewModelHome(
-    private val repositoryMovie: RepositoryMovie = RepositoryMovie()
+    private val context: Context,
+    private val repositoryMovie: RepositoryMovie = RepositoryMovie(context),
 ) : ViewModel() {
 
     private val mutableStateFlowMovies: MutableStateFlow<List<Movie>> = MutableStateFlow(listOf())
     val immutableStateFlowMovies = mutableStateFlowMovies.asStateFlow()
 
+    val movieFavoritesStateFlow: StateFlow<List<MovieFavorite>> = repositoryMovie.loadAllMovieFavorites().stateIn(viewModelScope,
+        SharingStarted.WhileSubscribed(), emptyList())
+
     init {
-        viewModelScope.launch { loadAll() }
+        viewModelScope.launch { fetchPopularMovies() }
         Log.d("Tag", "ViewModelHome initialized")
     }
 
@@ -28,7 +39,7 @@ class ViewModelHome(
         mutableStateFlowMovies.update { list }
     }
 
-    suspend fun loadAll() {
+    suspend fun fetchPopularMovies() {
         withContext(Dispatchers.IO) {
             val list = try {
                 repositoryMovie.fetchPopularMoviesResponse().list

@@ -1,7 +1,7 @@
-package com.example.movie.model
+package com.example.movie.data.model
 
-import com.example.movie.model.movieDetails.Genre
-import com.example.movie.model.movieDetails.ProductionCompany
+import com.example.movie.data.model.movieDetails.Genre
+import com.example.movie.data.model.movieDetails.ProductionCompany
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 import java.time.LocalDate

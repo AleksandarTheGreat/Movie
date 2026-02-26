@@ -1,4 +1,4 @@
-package com.example.movie.model
+package com.example.movie.data.model
 
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable

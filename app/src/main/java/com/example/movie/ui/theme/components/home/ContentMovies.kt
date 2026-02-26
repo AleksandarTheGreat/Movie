@@ -2,7 +2,6 @@ package com.example.movie.ui.theme.components.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,14 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.movie.model.Movie
-import com.example.movie.model.ScreenHeightType
-import com.example.movie.model.ScreenWidthType
+import com.example.movie.data.model.Movie
+import com.example.movie.data.model.ScreenHeightType
+import com.example.movie.data.model.ScreenWidthType
 import com.example.movie.ui.theme.MovieTheme
 
 @SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
-fun ListMovies(
+fun ContentMovies(
     modifier: Modifier = Modifier,
     movieStateList: List<Movie>,
     screenWidthType: ScreenWidthType,
@@ -87,9 +86,9 @@ fun ListMovies(
 
 @Preview
 @Composable
-private fun ListMoviesPreview() {
+private fun ContentMoviesPreview() {
     MovieTheme {
-        ListMovies(
+        ContentMovies(
             movieStateList = listOf(),
             screenWidthType = ScreenWidthType.NARROW,
             screenHeightType = ScreenHeightType.NARROW,

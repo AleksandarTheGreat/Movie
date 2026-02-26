@@ -1,4 +1,4 @@
-package com.example.movie.model
+package com.example.movie.data.model
 
 enum class ScreenHeightType {
     NARROW,
