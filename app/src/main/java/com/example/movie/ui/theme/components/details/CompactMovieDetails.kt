@@ -148,13 +148,7 @@ private fun HeaderOverviewWithHeart(subtitle: String, movieDetails: MovieDetails
                         posterPath = movieDetails.posterPath ?: ""
                     )
 
-                    CoroutineScope(Dispatchers.IO).launch {
-                        if (isLikedState) {
-                            viewModelDetails.insertMovieFavorite(movieFavorite)
-                        } else {
-                            viewModelDetails.deleteMovieFavorite(movieFavorite)
-                        }
-                    }
+                    viewModelDetails.toggleFavorite(movieFavorite, isLikedState)
                 },
             painter = painterResource(imageRes),
             contentDescription = "Heart image description and stuff"

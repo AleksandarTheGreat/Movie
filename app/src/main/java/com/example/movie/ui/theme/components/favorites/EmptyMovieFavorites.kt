@@ -1,4 +1,4 @@
-package com.example.movie.ui.theme.components.home
+package com.example.movie.ui.theme.components.favorites
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.example.movie.ui.theme.MovieTheme
 
 @Composable
-fun EmptyMovies(
+fun EmptyMovieFavorites(
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -52,8 +52,8 @@ fun EmptyMovies(
 
 @Preview
 @Composable
-private fun EmptyMoviesPreview() {
+private fun EmptyMovieFavoritesPreview() {
     MovieTheme {
-        EmptyMovies()
+        EmptyMovieFavorites()
     }
 }

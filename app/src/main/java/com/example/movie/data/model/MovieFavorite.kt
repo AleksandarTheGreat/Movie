@@ -16,4 +16,9 @@ data class MovieFavorite(
     val overview: String,
     @ColumnInfo(name = "poster_path")
     val posterPath: String,
-)
+) {
+    fun posterImageUrl(): String {
+        val baseUrl = "https://image.tmdb.org/t/p/w500"
+        return "${baseUrl}${posterPath}"
+    }
+}

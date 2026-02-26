@@ -27,9 +27,6 @@ class ViewModelHome(
     private val mutableStateFlowMovies: MutableStateFlow<List<Movie>> = MutableStateFlow(listOf())
     val immutableStateFlowMovies = mutableStateFlowMovies.asStateFlow()
 
-    val movieFavoritesStateFlow: StateFlow<List<MovieFavorite>> = repositoryMovie.loadAllMovieFavorites().stateIn(viewModelScope,
-        SharingStarted.WhileSubscribed(), emptyList())
-
     init {
         viewModelScope.launch { fetchPopularMovies() }
         Log.d("Tag", "ViewModelHome initialized")

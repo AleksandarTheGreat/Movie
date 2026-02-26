@@ -19,6 +19,8 @@ import com.example.movie.data.model.ScreenWidthType
 import com.example.movie.ui.theme.MovieTheme
 import com.example.movie.ui.theme.details.ScreenDetails
 import com.example.movie.ui.theme.details.ScreenDetailsGraph
+import com.example.movie.ui.theme.favorites.ScreenFavorites
+import com.example.movie.ui.theme.favorites.ScreenFavoritesGraph
 import com.example.movie.ui.theme.home.ScreenHome
 import com.example.movie.ui.theme.home.ScreenHomeGraph
 
@@ -46,6 +48,9 @@ class MainActivity : ComponentActivity() {
                             screenHeightType = screenHeightType,
                             navigateToScreenDetails = { id ->
                                 navController.navigate(ScreenDetailsGraph(id = id))
+                            },
+                            navigateToScreenFavorites = {
+                                navController.navigate(ScreenFavoritesGraph)
                             }
                         )
                     }
@@ -61,6 +66,16 @@ class MainActivity : ComponentActivity() {
                                 navController.navigateUp()
                             },
                             movieId = id,
+                        )
+                    }
+
+                    composable<ScreenFavoritesGraph> {
+                        ScreenFavorites(
+                            screenWidthType = screenWidthType,
+                            screenHeightType = screenHeightType,
+                            navigateUp = {
+                                navController.navigateUp()
+                            }
                         )
                     }
                 }

@@ -37,14 +37,11 @@ import com.example.movie.ui.theme.viewModel.ViewModelHomeFactory
 fun ScreenHome(
     modifier: Modifier = Modifier,
     navigateToScreenDetails: (id: Int) -> Unit,
+    navigateToScreenFavorites: () -> Unit,
     viewModelHome: ViewModelHome = viewModel(factory = ViewModelHomeFactory(LocalContext.current)),
     screenWidthType: ScreenWidthType,
     screenHeightType: ScreenHeightType,
 ) {
-    val context = LocalContext.current
-
-    val movieFavorites by viewModelHome.movieFavoritesStateFlow.collectAsStateWithLifecycle()
-    Toast.makeText(context, movieFavorites.toString(), Toast.LENGTH_SHORT).show()
 
     Scaffold(
         modifier = Modifier
@@ -60,9 +57,7 @@ fun ScreenHome(
                         Text(text = "Movie app")
                         Button(
                             modifier = Modifier.padding(horizontal = 12.dp),
-                            onClick = {
-                                Toast.makeText(context, "Not ready yet", Toast.LENGTH_SHORT).show()
-                            }
+                            onClick = navigateToScreenFavorites,
                         ) {
                             Text(text = "Favorites")
                         }
@@ -110,6 +105,7 @@ private fun ScreenHomePreview() {
     MovieTheme {
         ScreenHome(
             navigateToScreenDetails = {},
+            navigateToScreenFavorites = {},
             screenWidthType = ScreenWidthType.NARROW,
             screenHeightType = ScreenHeightType.NARROW
         )

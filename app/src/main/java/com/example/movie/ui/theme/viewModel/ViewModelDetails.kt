@@ -9,6 +9,7 @@ import com.example.movie.data.model.MovieFavorite
 import com.example.movie.data.repository.Implementations.RepositoryMovie
 import com.example.movie.data.room.AppDatabase
 import com.example.movie.data.room.MovieDao
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ViewModelDetails(
@@ -44,6 +46,16 @@ class ViewModelDetails(
             }
 
             updateMutableStateFlowMovieDetailsValue(movieDetails)
+        }
+    }
+
+    fun toggleFavorite(movieFavorite: MovieFavorite, isLikedState: Boolean) {
+        viewModelScope.launch {
+            if (isLikedState) {
+                insertMovieFavorite(movieFavorite)
+            } else {
+                deleteMovieFavorite(movieFavorite)
+            }
         }
     }
 
