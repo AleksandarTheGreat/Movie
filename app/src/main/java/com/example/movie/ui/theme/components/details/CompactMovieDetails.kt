@@ -121,6 +121,7 @@ fun CompactMovieDetails(
 @Composable
 private fun HeaderOverviewWithHeart(subtitle: String, movieDetails: MovieDetails, viewModelDetails: ViewModelDetails) {
 
+    val context = LocalContext.current
     val movieExistsState by viewModelDetails.immutableStateFlowMovieExists.collectAsStateWithLifecycle()
     var movieExists = movieExistsState
 
@@ -151,6 +152,9 @@ private fun HeaderOverviewWithHeart(subtitle: String, movieDetails: MovieDetails
                         overview = movieDetails.overview,
                         posterPath = movieDetails.posterPath ?: ""
                     )
+
+                    if (movieExists) { Toast.makeText(context, "'${movieDetails.title}' added to favorites", Toast.LENGTH_SHORT).show() }
+                    else { Toast.makeText(context, "'${movieDetails.title}' removed from favorites", Toast.LENGTH_SHORT).show() }
 
                     viewModelDetails.toggleFavorite(movieFavorite, movieExists)
                 },

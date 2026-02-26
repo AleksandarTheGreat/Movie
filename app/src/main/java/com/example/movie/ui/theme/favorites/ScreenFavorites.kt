@@ -60,7 +60,7 @@ fun ScreenFavorites(
 ) {
     val context = LocalContext.current
     val movieFavorites by viewModelFavorites.movieFavoritesStateFlow.collectAsStateWithLifecycle()
-    Toast.makeText(context, movieFavorites.toString(), Toast.LENGTH_SHORT).show()
+    Toast.makeText(context, "Loaded ${movieFavorites.size} favorites", Toast.LENGTH_SHORT).show()
 
     Scaffold(
         modifier = Modifier
