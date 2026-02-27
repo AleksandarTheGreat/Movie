@@ -80,7 +80,7 @@ private fun MainTextContentColumn(movie: Movie) {
             .zIndex(2f)
     ) {
         Text(
-            text = movie.title,
+            text = movie.title ?: "",
             fontSize = 18.sp,
             color = Color.White,
             fontWeight = FontWeight.SemiBold,
@@ -117,7 +117,7 @@ private fun ImageAnd18Banner(movie: Movie) {
             .fillMaxSize()
             .zIndex(1f)
     ) {
-        if (movie.adult)
+        if (movie.adult ?: false)
             Text(
                 text = "18+",
                 color = Color.White,

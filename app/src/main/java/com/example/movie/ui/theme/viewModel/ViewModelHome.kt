@@ -38,12 +38,25 @@ class ViewModelHome(
         mutableStateFlowMovies.update { list }
     }
 
-    suspend fun fetchPopularMovies() {
-        withContext(Dispatchers.IO) {
+    fun fetchPopularMovies() {
+        viewModelScope.launch(Dispatchers.IO) {
             val list = try {
-                repositoryMovie.fetchPopularMoviesResponse().list
+                repositoryMovie.fetchPopularMoviesResponse(page = 1).list
             } catch (e: Exception) {
                 Log.d("Error" , e.toString())
+                emptyList<Movie>()
+            }
+
+            updateMutableStateFlowMovies(list)
+        }
+    }
+
+    fun fetchSearchedMovies(query: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val list = try {
+                repositoryMovie.fetchSearchedMoviesResponse(query).list
+            } catch (e: Exception) {
+                Log.d("Error", e.toString())
                 emptyList<Movie>()
             }
 

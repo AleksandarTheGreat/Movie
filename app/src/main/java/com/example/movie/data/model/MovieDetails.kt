@@ -11,26 +11,26 @@ import java.util.Locale
 @Serializable
 data class MovieDetails(
     val id: Int,
-    val title: String,
-    val overview: String,
-    val status: String,
-    val adult: Boolean,
+    val title: String?,
+    val overview: String?,
+    val status: String?,
+    val adult: Boolean?,
     @SerializedName(value = "release_date")
-    val releaseDate: String,
+    val releaseDate: String?,
     @SerializedName(value = "backdrop_path")
     val backdropPath: String?,
     @SerializedName(value = "poster_path")
     val posterPath: String?,
     @SerializedName(value = "runtime")
-    val runtime: Int,
+    val runtime: Int?,
     @SerializedName(value = "genres")
-    val listGenres: List<Genre>,
+    val listGenres: List<Genre>?,
     @SerializedName(value = "production_companies")
-    val listProductionCompanies: List<ProductionCompany>,
+    val listProductionCompanies: List<ProductionCompany>?,
     @SerializedName(value = "vote_average")
-    val voteAverage: Double,
+    val voteAverage: Double?,
     @SerializedName(value = "vote_count")
-    val voteCount: Int,
+    val voteCount: Int?,
 
 ) {
     constructor() : this(
@@ -64,17 +64,23 @@ data class MovieDetails(
     }
 
     fun readableReleaseDate(): String {
-        val parts = releaseDate.split("-")
-        val localDate: LocalDate = LocalDate.of(parts[0].toInt(), parts[1].toInt(), parts[2].toInt())
+        return if (releaseDate.isNullOrEmpty()) "N/A" else {
+            val parts = releaseDate.split("-")
 
-        val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE dd MMM yyyy")
-        return localDate.format(dateTimeFormatter)
+            if (parts.isNotEmpty()) {
+                val localDate: LocalDate = LocalDate.of(parts[0].toInt(), parts[1].toInt(), parts[2].toInt())
+                val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE dd MMM yyyy")
+                return localDate.format(dateTimeFormatter)
+            }
+
+            return "N/A"
+        }
     }
 
     fun voteAverageRoundedTo1Decimal(): String = String.format(Locale.ROOT, "%.1f", voteAverage)
 
     fun isEmptyMovieDetails(): Boolean = (id == 0 && title == "Default" && overview == "Default" && posterPath == ""
-            && status == "Default" && releaseDate == "") && !adult && backdropPath == "" && runtime == 0 && listGenres.isEmpty() && listProductionCompanies.isEmpty()
+            && status == "Default" && releaseDate == "") && !adult!! && backdropPath == "" && runtime == 0 && listGenres?.isEmpty() == true && listProductionCompanies?.isEmpty() == true
             && voteAverage == 0.0 && voteCount == 0
 
 }

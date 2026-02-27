@@ -7,8 +7,9 @@ import com.example.movie.data.model.MoviesResponse
 import kotlinx.coroutines.flow.Flow
 
 interface IRepositoryMovie {
-    suspend fun fetchPopularMoviesResponse(): MoviesResponse
+    suspend fun fetchPopularMoviesResponse(page: Int): MoviesResponse
     suspend fun fetchMovieDetailsResponse(id: Int): MovieDetails
+    suspend fun fetchSearchedMoviesResponse(query: String): MoviesResponse
 
     fun loadAllMovieFavorites(): Flow<List<MovieFavorite>>
 

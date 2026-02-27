@@ -17,12 +17,16 @@ class RepositoryMovie(
     private val movieDao: MovieDao = AppDatabase.getInstance(context).movieDao()
 ): IRepositoryMovie {
 
-    override suspend fun fetchPopularMoviesResponse(): MoviesResponse {
-        return movieApi.fetchMoviesResponse()
+    override suspend fun fetchPopularMoviesResponse(page: Int): MoviesResponse {
+        return movieApi.fetchMoviesResponse(page = page)
     }
 
     override suspend fun fetchMovieDetailsResponse(id: Int): MovieDetails {
         return movieApi.fetchMovieDetailsResponse(id = id)
+    }
+
+    override suspend fun fetchSearchedMoviesResponse(query: String): MoviesResponse {
+        return movieApi.fetchSearchedMoviesResponse(query = query)
     }
 
     override fun loadAllMovieFavorites(): Flow<List<MovieFavorite>> {

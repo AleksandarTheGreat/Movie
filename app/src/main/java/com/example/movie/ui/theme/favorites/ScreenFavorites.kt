@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -91,27 +92,43 @@ fun ScreenFavorites(
     ) { innerPadding ->
 
         if (movieFavorites.isNotEmpty()) {
-            LazyColumn(
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally,
+            ContentMovieFavorites(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding)
-            ) {
-                items(movieFavorites, key = { it.id }) { movieFavorite ->
-                    CardMovieFavorite(
-                        context = context,
-                        movieFavorite = movieFavorite,
-                        navigateToScreenDetails = navigateToScreenDetails
-                    )
-                }
-            }
+                    .padding(innerPadding),
+                movieFavorites = movieFavorites,
+                context = context,
+                navigateToScreenDetails = navigateToScreenDetails,
+            )
         } else {
             EmptyMovieFavorites(
                 modifier = Modifier
                     .fillMaxSize()
+                    .padding(innerPadding)
                     .verticalScroll(rememberScrollState())
                     .padding(all = 36.dp)
+            )
+        }
+    }
+}
+
+@Composable
+private fun ContentMovieFavorites(
+    modifier: Modifier,
+    movieFavorites: List<MovieFavorite>,
+    context: Context,
+    navigateToScreenDetails: (Int) -> Unit
+) {
+    LazyColumn(
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+        items(movieFavorites, key = { it.id }) { movieFavorite ->
+            CardMovieFavorite(
+                context = context,
+                movieFavorite = movieFavorite,
+                navigateToScreenDetails = navigateToScreenDetails
             )
         }
     }
