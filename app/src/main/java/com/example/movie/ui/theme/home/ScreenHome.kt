@@ -155,7 +155,7 @@ fun SearchBarCustom(
             else
                 viewModelHome.fetchPopularMovies()
 
-            Log.d("Tag", "Fetching for ${query}")
+            Log.d("Tag", "Fetching for '${query}'")
         },
         placeholder = { Text("Search movie...") },
         leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Nothing") },

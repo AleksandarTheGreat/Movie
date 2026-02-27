@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MovieDao {
 
-    @Query("SELECT * FROM MovieFavorite")
-    fun loadAllMovies(): Flow<List<MovieFavorite>>
+        @Query("SELECT * FROM MovieFavorite WHERE LOWER(title) LIKE '%' || LOWER(:query) || '%'")
+    fun loadAllMovies(query: String): Flow<List<MovieFavorite>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(movieFavorite: MovieFavorite)
