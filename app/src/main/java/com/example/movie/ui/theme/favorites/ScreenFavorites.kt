@@ -254,7 +254,10 @@ fun SearchBarCustom(
         trailingIcon = {
             if (query.isNotEmpty()) {
                 IconButton(
-                    onClick = { query = "" }
+                    onClick = {
+                        query = ""
+                        viewModelFavorites.search(query)
+                    }
                 ) {
                     Icon(
                         Icons.Default.Clear,

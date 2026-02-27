@@ -162,7 +162,10 @@ fun SearchBarCustom(
         trailingIcon = {
             if (query.isNotEmpty()){
                 IconButton(
-                    onClick = { query = "" }
+                    onClick = {
+                        query = ""
+                        viewModelHome.fetchPopularMovies()
+                    }
                 ) {
                     Icon(
                         Icons.Default.Clear,
