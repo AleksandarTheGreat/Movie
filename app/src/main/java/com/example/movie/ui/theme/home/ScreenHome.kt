@@ -1,7 +1,9 @@
 package com.example.movie.ui.theme.home
 
+import android.app.Application
 import android.content.Context
 import android.widget.Toast
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.movie.MovieApp
 import com.example.movie.R
 import com.example.movie.data.model.ScreenHeightType
 import com.example.movie.data.model.ScreenWidthType
@@ -45,7 +48,11 @@ fun ScreenHome(
     modifier: Modifier = Modifier,
     navigateToScreenDetails: (id: Int) -> Unit,
     navigateToScreenFavorites: () -> Unit,
-    viewModelHome: ViewModelHome = viewModel(factory = ViewModelHomeFactory(LocalContext.current)),
+    viewModelHome: ViewModelHome = viewModel(
+        factory = ViewModelHomeFactory(
+            repositoryMovie = (LocalContext.current.applicationContext as MovieApp).repositoryMovie
+        )
+    ),
     screenWidthType: ScreenWidthType,
     screenHeightType: ScreenHeightType,
 ) {
@@ -108,19 +115,6 @@ fun ScreenHome(
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun ScreenHomePreview() {
-    MovieTheme {
-        ScreenHome(
-            navigateToScreenDetails = {},
-            navigateToScreenFavorites = {},
-            screenWidthType = ScreenWidthType.NARROW,
-            screenHeightType = ScreenHeightType.NARROW
-        )
     }
 }
 

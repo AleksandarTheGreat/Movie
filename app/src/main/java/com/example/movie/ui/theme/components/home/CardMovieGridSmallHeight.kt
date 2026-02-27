@@ -33,7 +33,7 @@ import com.example.movie.ui.theme.MovieTheme
 
 @SuppressLint("DefaultLocale")
 @Composable
-fun CardMovieGridNarrowHeight(
+fun CardMovieGridSmallHeight(
     modifier: Modifier = Modifier,
     movie: Movie,
     navigateToScreenDetails: (id: Int) -> Unit,
@@ -147,9 +147,9 @@ private fun ImageAnd18Banner(movie: Movie) {
 
 @Preview
 @Composable
-private fun CardMovieGridNarrowHeightPreview() {
+private fun CardMovieGridSmallHeightPreview() {
     MovieTheme {
-        CardMovieGridNarrowHeight(
+        CardMovieGridSmallHeight(
             movie = Movie(
                 0, "Preview", "Preview", false, "Preview", 0.0, 0, "Preview"
             ),

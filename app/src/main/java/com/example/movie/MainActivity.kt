@@ -96,9 +96,9 @@ class MainActivity : ComponentActivity() {
 
     fun findOutScreenHeightType(windowSizeClass: WindowSizeClass): ScreenHeightType {
         return if (windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact) {
-            ScreenHeightType.NARROW
+            ScreenHeightType.SMALL
         } else {
-            ScreenHeightType.WIDE
+            ScreenHeightType.BIG
         }
     }
 }

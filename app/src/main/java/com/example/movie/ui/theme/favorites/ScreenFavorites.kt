@@ -40,9 +40,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.example.movie.MovieApp
 import com.example.movie.data.model.MovieFavorite
 import com.example.movie.data.model.ScreenHeightType
 import com.example.movie.data.model.ScreenWidthType
+import com.example.movie.data.repository.Implementations.RepositoryMovie
 import com.example.movie.ui.theme.MovieTheme
 import com.example.movie.ui.theme.components.favorites.EmptyMovieFavorites
 import com.example.movie.ui.theme.viewModel.ViewModelFavorites
@@ -56,7 +58,11 @@ fun ScreenFavorites(
     screenHeightType: ScreenHeightType,
     navigateUp: () -> Unit,
     navigateToScreenDetails: (id: Int) -> Unit,
-    viewModelFavorites: ViewModelFavorites = viewModel(factory = ViewModelFavoritesFactory(LocalContext.current))
+    viewModelFavorites: ViewModelFavorites = viewModel(
+        factory = ViewModelFavoritesFactory(
+            repositoryMovie = (LocalContext.current.applicationContext as MovieApp).repositoryMovie
+        )
+    )
 ) {
     val context = LocalContext.current
     val movieFavorites by viewModelFavorites.movieFavoritesStateFlow.collectAsStateWithLifecycle()
@@ -192,7 +198,7 @@ private fun ScreenFavoritesPreview() {
     MovieTheme {
         ScreenFavorites(
             screenWidthType = ScreenWidthType.NARROW,
-            screenHeightType = ScreenHeightType.NARROW,
+            screenHeightType = ScreenHeightType.SMALL,
             navigateToScreenDetails = {},
             navigateUp = {}
         )

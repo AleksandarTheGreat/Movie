@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.movie.MovieApp
 import com.example.movie.data.model.ScreenHeightType
 import com.example.movie.data.model.ScreenWidthType
 import com.example.movie.ui.theme.MovieTheme
@@ -37,14 +38,18 @@ import com.example.movie.ui.theme.viewModel.ViewModelDetailsFactory
 fun ScreenDetails(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit,
-    viewModelDetails: ViewModelDetails = viewModel(factory = ViewModelDetailsFactory(LocalContext.current)),
+    viewModelDetails: ViewModelDetails = viewModel(
+        factory = ViewModelDetailsFactory(
+            repositoryMovie = (LocalContext.current.applicationContext as MovieApp).repositoryMovie
+        )
+    ),
     screenWidthType: ScreenWidthType,
     screenHeightType: ScreenHeightType,
     movieId: Int,
 ) {
 
     LaunchedEffect(Unit) {
-       viewModelDetails.fetchMovieDetails(movieId)
+        viewModelDetails.fetchMovieDetails(movieId)
     }
 
     Scaffold(
@@ -74,7 +79,7 @@ fun ScreenDetails(
                 .padding(innerPadding)
         ) {
             val movieDetailsState by viewModelDetails.immutableStateFlowMovieDetails.collectAsStateWithLifecycle()
-            
+
             if (movieDetailsState.isEmptyMovieDetails()) {
                 EmptyMovieDetails(
                     modifier = Modifier
@@ -103,7 +108,7 @@ private fun ScreenDetailsPreview() {
         ScreenDetails(
             navigateUp = {},
             screenWidthType = ScreenWidthType.NARROW,
-            screenHeightType = ScreenHeightType.NARROW,
+            screenHeightType = ScreenHeightType.SMALL,
             movieId = 0,
         )
     }

@@ -46,6 +46,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.movie.MovieApp
 import com.example.movie.R
 import com.example.movie.data.model.MovieDetails
 import com.example.movie.data.model.MovieFavorite
@@ -373,7 +374,11 @@ private fun CompactMovieDetailsPreview() {
     MovieTheme {
         CompactMovieDetails(
             movieDetails = MovieDetails(),
-            viewModelDetails = viewModel(factory = ViewModelDetailsFactory(context = LocalContext.current))
+            viewModelDetails = viewModel(
+                factory = ViewModelDetailsFactory(
+                    repositoryMovie = (LocalContext.current.applicationContext as MovieApp).repositoryMovie
+                )
+            )
         )
     }
 

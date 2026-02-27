@@ -1,9 +1,12 @@
 package com.example.movie.ui.theme.viewModel
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.movie.MovieApp
 import com.example.movie.data.model.Movie
 import com.example.movie.data.model.MovieFavorite
 import com.example.movie.data.repository.Implementations.RepositoryMovie
@@ -20,8 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ViewModelHome(
-    private val context: Context,
-    private val repositoryMovie: RepositoryMovie = RepositoryMovie(context),
+    private val repositoryMovie: RepositoryMovie,
 ) : ViewModel() {
 
     private val mutableStateFlowMovies: MutableStateFlow<List<Movie>> = MutableStateFlow(listOf())

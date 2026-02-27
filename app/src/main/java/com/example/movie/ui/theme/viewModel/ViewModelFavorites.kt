@@ -11,8 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 
 class ViewModelFavorites(
-    private val context: Context,
-    private val repositoryMovie: RepositoryMovie = RepositoryMovie(context)
+    private val repositoryMovie: RepositoryMovie
 ) : ViewModel() {
 
     val movieFavoritesStateFlow: StateFlow<List<MovieFavorite>> = repositoryMovie.loadAllMovieFavorites().stateIn(viewModelScope,

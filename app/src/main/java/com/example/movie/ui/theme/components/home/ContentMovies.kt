@@ -57,9 +57,9 @@ fun ContentMovies(
             rows = GridCells.Fixed(2),
             modifier = modifier
         ) {
-            if (screenHeightType == ScreenHeightType.WIDE) {
+            if (screenHeightType == ScreenHeightType.BIG) {
                 items(movieStateList, key = { it.id }) { movie ->
-                    CardMovieGridWideHeight(
+                    CardMovieGridBigHeight(
                         modifier = Modifier
                             .width(cardWidth.dp)
                             .fillMaxHeight()
@@ -70,7 +70,7 @@ fun ContentMovies(
                 }
             } else {
                 items(movieStateList, key = { it.id }) { movie ->
-                    CardMovieGridNarrowHeight(
+                    CardMovieGridSmallHeight(
                         modifier = Modifier
                             .width(cardWidth.dp)
                             .fillMaxHeight()
@@ -91,7 +91,7 @@ private fun ContentMoviesPreview() {
         ContentMovies(
             movieStateList = listOf(),
             screenWidthType = ScreenWidthType.NARROW,
-            screenHeightType = ScreenHeightType.NARROW,
+            screenHeightType = ScreenHeightType.SMALL,
             navigateToScreenDetails = {}
         )
     }

@@ -21,11 +21,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ViewModelDetails(
-    private val context: Context,
-    private val repositoryMovie: RepositoryMovie = RepositoryMovie(context),
+    private val repositoryMovie: RepositoryMovie,
 ) : ViewModel() {
 
-    private val mutableStateFlowMovieDetails: MutableStateFlow<MovieDetails> = MutableStateFlow(MovieDetails())
+    private val mutableStateFlowMovieDetails: MutableStateFlow<MovieDetails> =
+        MutableStateFlow(MovieDetails())
     val immutableStateFlowMovieDetails = mutableStateFlowMovieDetails.asStateFlow()
 
     private val mutableStateFlowMovieExists: MutableStateFlow<Boolean> = MutableStateFlow(false)
@@ -35,7 +35,7 @@ class ViewModelDetails(
         Log.d("Tag", "ViewModelDetails initialized")
     }
 
-    fun updateMutableStateFlowMovieDetailsValue(movieDetails: MovieDetails){
+    fun updateMutableStateFlowMovieDetailsValue(movieDetails: MovieDetails) {
         mutableStateFlowMovieDetails.update { movieDetails }
     }
 
