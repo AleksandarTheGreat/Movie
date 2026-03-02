@@ -69,7 +69,7 @@ private fun RowScope.ColumnMainContentOfCard(movie: Movie) {
             .weight(2f)
     ) {
         Text(
-            text = movie.title,
+            text = movie.title ?: "",
             fontSize = 18.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.fillMaxWidth(),
@@ -78,29 +78,17 @@ private fun RowScope.ColumnMainContentOfCard(movie: Movie) {
 
         Spacer(modifier = Modifier.height(4.dp))
 
-        if (movie.overview.isNotEmpty())
-            Text(
-                text = movie.overview,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Normal,
-                maxLines = 2,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                textAlign = TextAlign.Start,
-                overflow = TextOverflow.Ellipsis
-            )
-        else
-            Text(
-                text = "No overview :(",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Normal,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                textAlign = TextAlign.Start,
-                overflow = TextOverflow.Ellipsis
-            )
+        Text(
+            text = movie.overview ?: "",
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Normal,
+            maxLines = 2,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            textAlign = TextAlign.Start,
+            overflow = TextOverflow.Ellipsis
+        )
 
         Spacer(modifier = Modifier.height(4.dp))
 
@@ -133,7 +121,7 @@ private fun RowScope.ImageAnd18Banner(movie: Movie) {
             .weight(1f)
     ) {
 
-        if (movie.adult)
+        if (movie.adult ?: false)
             Text(
                 text = "18+",
                 color = Color.White,

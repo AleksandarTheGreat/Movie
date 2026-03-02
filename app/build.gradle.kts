@@ -2,8 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
 
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+
     id(libs.plugins.kotlin.serialization.get().pluginId)
-    id("com.google.devtools.ksp")
 }
 
 android {
@@ -77,4 +79,9 @@ dependencies {
 
     implementation("androidx.compose.material:material-icons-core:1.7.8")
     implementation("androidx.compose.material3:material3:1.4.0")
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    implementation(libs.hilt.navigation)
 }

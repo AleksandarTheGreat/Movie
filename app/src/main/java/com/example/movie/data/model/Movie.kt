@@ -10,17 +10,17 @@ import java.util.Objects
 @Serializable
 class Movie(
     val id: Int,
-    val title: String,
-    val overview: String,
-    val adult: Boolean,
+    val title: String?,
+    val overview: String?,
+    val adult: Boolean?,
     @SerializedName(value = "release_date")
-    val releaseDate: String,
+    val releaseDate: String?,
     @SerializedName(value = "vote_average")
-    val voteAverage: Double,
+    val voteAverage: Double?,
     @SerializedName(value = "vote_count")
-    val voteCount: Int,
+    val voteCount: Int?,
     @SerializedName(value = "poster_path")
-    val posterPath: String,
+    val posterPath: String?,
 ) {
 
     fun posterImageUrl(): String {
@@ -29,11 +29,17 @@ class Movie(
     }
 
     fun readableReleaseDate(): String {
-        val parts = releaseDate.split("-")
-        val localDate: LocalDate = LocalDate.of(parts[0].toInt(), parts[1].toInt(), parts[2].toInt())
+        return if (releaseDate.isNullOrEmpty()) "N/A" else {
+            val parts = releaseDate.split("-")
 
-        val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE dd MMM yyyy")
-        return localDate.format(dateTimeFormatter)
+            if (parts.isNotEmpty()) {
+                val localDate: LocalDate = LocalDate.of(parts[0].toInt(), parts[1].toInt(), parts[2].toInt())
+                val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE dd MMM yyyy")
+                return localDate.format(dateTimeFormatter)
+            }
+
+            return "N/A"
+        }
     }
 
     fun voteAverageRoundedTo1Decimal(): String {

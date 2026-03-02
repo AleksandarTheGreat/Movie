@@ -9,6 +9,7 @@ import com.example.movie.data.model.MovieFavorite
 import com.example.movie.data.repository.Implementations.RepositoryMovie
 import com.example.movie.data.room.AppDatabase
 import com.example.movie.data.room.MovieDao
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,8 +20,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class ViewModelDetails(
+@HiltViewModel
+class ViewModelDetails @Inject constructor(
     private val repositoryMovie: RepositoryMovie,
 ) : ViewModel() {
 
@@ -43,8 +46,8 @@ class ViewModelDetails(
         mutableStateFlowMovieExists.update { exists }
     }
 
-    suspend fun fetchMovieDetails(id: Int) {
-        withContext(Dispatchers.IO) {
+    fun fetchMovieDetails(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
             val movieDetails = try {
                 repositoryMovie.fetchMovieDetailsResponse(id = id)
             } catch (e: Exception) {
@@ -57,7 +60,7 @@ class ViewModelDetails(
     }
 
     fun toggleFavorite(movieFavorite: MovieFavorite, isLikedState: Boolean) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             if (isLikedState) {
                 insertMovieFavorite(movieFavorite)
                 updateMutableStateFlowMovieExistsValue(true)
@@ -69,19 +72,15 @@ class ViewModelDetails(
     }
 
     suspend fun insertMovieFavorite(movieFavorite: MovieFavorite) {
-        withContext(Dispatchers.IO) {
-            repositoryMovie.insert(movieFavorite)
-        }
+        repositoryMovie.insert(movieFavorite)
     }
 
     suspend fun deleteMovieFavorite(movieFavorite: MovieFavorite) {
-        withContext(Dispatchers.IO) {
-            repositoryMovie.delete(movieFavorite)
-        }
+        repositoryMovie.delete(movieFavorite)
     }
 
     fun checkIfMovieExistsInFavorites(id: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val exists = repositoryMovie.exists(id)
             updateMutableStateFlowMovieExistsValue(exists)
         }

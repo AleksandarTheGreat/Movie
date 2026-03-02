@@ -21,4 +21,10 @@ interface MovieApi {
         @Path("id") id: Int,
         @Query(value = "api_key") apiKey: String = API_KEY,
     ): MovieDetails
+
+    @GET("search/movie")
+    suspend fun fetchSearchedMoviesResponse(
+        @Query(value = "api_key") apiKey: String = API_KEY,
+        @Query(value = "query") query: String
+    ): MoviesResponse
 }

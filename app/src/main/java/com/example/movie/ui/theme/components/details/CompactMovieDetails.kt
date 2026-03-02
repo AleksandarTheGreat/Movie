@@ -38,10 +38,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
@@ -50,10 +52,10 @@ import com.example.movie.MovieApp
 import com.example.movie.R
 import com.example.movie.data.model.MovieDetails
 import com.example.movie.data.model.MovieFavorite
+import com.example.movie.data.model.movieDetails.Genre
 import com.example.movie.data.model.movieDetails.ProductionCompany
 import com.example.movie.ui.theme.MovieTheme
 import com.example.movie.ui.theme.viewModel.ViewModelDetails
-import com.example.movie.ui.theme.viewModel.ViewModelDetailsFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -98,7 +100,7 @@ fun CompactMovieDetails(
         )
 
         Text(
-            text = movieDetails.overview,
+            text = movieDetails.overview ?: "",
             fontSize = 14.sp,
             modifier = Modifier
                 .fillMaxWidth()
@@ -149,8 +151,8 @@ private fun HeaderOverviewWithHeart(subtitle: String, movieDetails: MovieDetails
                     movieExists = !movieExists
                     val movieFavorite = MovieFavorite(
                         id = movieDetails.id,
-                        title = movieDetails.title,
-                        overview = movieDetails.overview,
+                        title = movieDetails.title ?: "",
+                        overview = movieDetails.overview ?: "",
                         posterPath = movieDetails.posterPath ?: ""
                     )
 
@@ -167,7 +169,7 @@ private fun HeaderOverviewWithHeart(subtitle: String, movieDetails: MovieDetails
 
 @Composable
 private fun BoxScope.PosterImageWithBlackShadowAnd18Banner(movieDetails: MovieDetails) {
-    if (movieDetails.adult)
+    if (movieDetails.adult ?: false)
         Text(
             text = "18+",
             color = Color.White,
@@ -213,7 +215,7 @@ private fun LazyRowProductionCompanies(movieDetails: MovieDetails) {
         modifier = Modifier
             .padding(vertical = 4.dp, horizontal = 12.dp)
     ) {
-        items(movieDetails.listProductionCompanies) { company ->
+        items(movieDetails.listProductionCompanies ?: emptyList<ProductionCompany>()) { company ->
             ProductionCompanyCard(company)
         }
     }
@@ -274,7 +276,7 @@ private fun BoxScope.TitleAndGenresColumn(
             ),
     ) {
         Text(
-            text = movieDetails.title,
+            text = movieDetails.title ?: "",
             color = Color.White,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
@@ -283,6 +285,8 @@ private fun BoxScope.TitleAndGenresColumn(
                 .padding(start = 12.dp, end = 12.dp)
                 .zIndex(2f),
             textAlign = TextAlign.Start,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
         )
 
         LazyRow (
@@ -291,7 +295,7 @@ private fun BoxScope.TitleAndGenresColumn(
                 .fillMaxWidth()
                 .padding(start = 12.dp, end = 12.dp)
         ) {
-            items(movieDetails.listGenres) { genre ->
+            items(movieDetails.listGenres ?: emptyList<Genre>()) { genre ->
                 SuggestionChip(
                     onClick = {
                         Toast.makeText(
@@ -324,7 +328,7 @@ private fun BoxScope.DetailsColumn(movieDetails: MovieDetails) {
             .align(alignment = Alignment.TopEnd),
     ) {
         Text(
-            text = "${movieDetails.runtime}",
+            text = "${movieDetails.runtime ?: 0}",
             fontSize = 26.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,
@@ -352,13 +356,6 @@ private fun BoxScope.DetailsColumn(movieDetails: MovieDetails) {
         )
 
         Text(
-            text = "Released on",
-            fontSize = 10.sp,
-            fontWeight = FontWeight.Normal,
-            color = Color.White,
-        )
-
-        Text(
             text = movieDetails.readableReleaseDate(),
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
@@ -374,11 +371,7 @@ private fun CompactMovieDetailsPreview() {
     MovieTheme {
         CompactMovieDetails(
             movieDetails = MovieDetails(),
-            viewModelDetails = viewModel(
-                factory = ViewModelDetailsFactory(
-                    repositoryMovie = (LocalContext.current.applicationContext as MovieApp).repositoryMovie
-                )
-            )
+            viewModelDetails = hiltViewModel()
         )
     }
 

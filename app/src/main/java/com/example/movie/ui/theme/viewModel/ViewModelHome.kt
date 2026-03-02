@@ -12,6 +12,7 @@ import com.example.movie.data.model.MovieFavorite
 import com.example.movie.data.repository.Implementations.RepositoryMovie
 import com.example.movie.data.room.AppDatabase
 import com.example.movie.data.room.MovieDao
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,8 +22,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class ViewModelHome(
+@HiltViewModel
+class ViewModelHome @Inject constructor(
     private val repositoryMovie: RepositoryMovie,
 ) : ViewModel() {
 
@@ -38,12 +41,25 @@ class ViewModelHome(
         mutableStateFlowMovies.update { list }
     }
 
-    suspend fun fetchPopularMovies() {
-        withContext(Dispatchers.IO) {
+    fun fetchPopularMovies() {
+        viewModelScope.launch(Dispatchers.IO) {
             val list = try {
-                repositoryMovie.fetchPopularMoviesResponse().list
+                repositoryMovie.fetchPopularMoviesResponse(page = 1).list
             } catch (e: Exception) {
                 Log.d("Error" , e.toString())
+                emptyList<Movie>()
+            }
+
+            updateMutableStateFlowMovies(list)
+        }
+    }
+
+    fun fetchSearchedMovies(query: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val list = try {
+                repositoryMovie.fetchSearchedMoviesResponse(query).list
+            } catch (e: Exception) {
+                Log.d("Error", e.toString())
                 emptyList<Movie>()
             }
 
