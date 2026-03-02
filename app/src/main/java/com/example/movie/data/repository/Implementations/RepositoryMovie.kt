@@ -15,11 +15,9 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class RepositoryMovie @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val movieApi: MovieApi,
+    private val movieDao: MovieDao,
 ): IRoomApi, IRestApi {
-
-    private val movieDao: MovieDao = AppDatabase.getInstance(context).movieDao()
 
     override suspend fun fetchPopularMoviesResponse(page: Int): MoviesResponse {
         return movieApi.fetchMoviesResponse(page = page)

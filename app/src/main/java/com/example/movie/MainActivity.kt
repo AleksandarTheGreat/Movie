@@ -2,6 +2,7 @@ package com.example.movie
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -10,13 +11,17 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.movie.data.model.ScreenHeightType
 import com.example.movie.data.model.ScreenWidthType
+import com.example.movie.data.repository.BindingTest
 import com.example.movie.data.repository.GlupaKlasa
+import com.example.movie.data.repository.IRestApi
+import com.example.movie.data.repository.Implementations.RepositoryMovie
 import com.example.movie.ui.theme.MovieTheme
 import com.example.movie.ui.theme.details.ScreenDetails
 import com.example.movie.ui.theme.details.ScreenDetailsGraph
@@ -25,6 +30,8 @@ import com.example.movie.ui.theme.favorites.ScreenFavoritesGraph
 import com.example.movie.ui.theme.home.ScreenHome
 import com.example.movie.ui.theme.home.ScreenHomeGraph
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -32,6 +39,10 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var glupaKlasa: GlupaKlasa
+
+    @Inject
+    lateinit var iRestApi: IRestApi
+
 
     @SuppressLint("ConfigurationScreenWidthHeight")
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -42,6 +53,14 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
+            LaunchedEffect(Unit) {
+                withContext(Dispatchers.IO) {
+                    val result = iRestApi.fetchPopularMoviesResponse(page = 1)
+                    Log.d("Tag", "The result")
+                    Log.d("Tag", result.toString())
+                }
+            }
+
             MovieTheme {
                 val navController = rememberNavController()
 
