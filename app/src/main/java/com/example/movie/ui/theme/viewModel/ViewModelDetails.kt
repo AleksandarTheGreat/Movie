@@ -9,6 +9,7 @@ import com.example.movie.data.model.MovieFavorite
 import com.example.movie.data.repository.Implementations.RepositoryMovie
 import com.example.movie.data.room.AppDatabase
 import com.example.movie.data.room.MovieDao
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,8 +20,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class ViewModelDetails(
+@HiltViewModel
+class ViewModelDetails @Inject constructor(
     private val repositoryMovie: RepositoryMovie,
 ) : ViewModel() {
 

@@ -45,6 +45,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.movie.MovieApp
@@ -55,7 +56,6 @@ import com.example.movie.ui.theme.components.home.EmptyMovies
 import com.example.movie.ui.theme.MovieTheme
 import com.example.movie.ui.theme.components.home.ContentMovies
 import com.example.movie.ui.theme.viewModel.ViewModelHome
-import com.example.movie.ui.theme.viewModel.ViewModelHomeFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,11 +63,7 @@ fun ScreenHome(
     modifier: Modifier = Modifier,
     navigateToScreenDetails: (id: Int) -> Unit,
     navigateToScreenFavorites: () -> Unit,
-    viewModelHome: ViewModelHome = viewModel(
-        factory = ViewModelHomeFactory(
-            repositoryMovie = (LocalContext.current.applicationContext as MovieApp).repositoryMovie
-        )
-    ),
+    viewModelHome: ViewModelHome = hiltViewModel(),
     screenWidthType: ScreenWidthType,
     screenHeightType: ScreenHeightType,
 ) {

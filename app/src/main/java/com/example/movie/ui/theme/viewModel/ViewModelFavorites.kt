@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movie.data.model.MovieFavorite
 import com.example.movie.data.repository.Implementations.RepositoryMovie
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,8 +14,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
-class ViewModelFavorites(
+@HiltViewModel
+class ViewModelFavorites @Inject constructor(
     private val repositoryMovie: RepositoryMovie
 ) : ViewModel() {
 

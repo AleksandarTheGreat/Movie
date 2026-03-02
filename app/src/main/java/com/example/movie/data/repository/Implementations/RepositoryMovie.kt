@@ -2,7 +2,7 @@ package com.example.movie.data.repository.Implementations
 
 import android.content.Context
 import com.example.movie.data.api.MovieApi
-import com.example.movie.data.api.MovieObject
+import com.example.movie.data.api.MovieModule
 import com.example.movie.data.model.MovieDetails
 import com.example.movie.data.model.MovieFavorite
 import com.example.movie.data.model.MoviesResponse
@@ -10,13 +10,16 @@ import com.example.movie.data.repository.IRestApi
 import com.example.movie.data.repository.IRoomApi
 import com.example.movie.data.room.AppDatabase
 import com.example.movie.data.room.MovieDao
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class RepositoryMovie(
-    private val context: Context,
-    private val movieApi: MovieApi = MovieObject.api,
-    private val movieDao: MovieDao = AppDatabase.getInstance(context).movieDao()
+class RepositoryMovie @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val movieApi: MovieApi,
 ): IRoomApi, IRestApi {
+
+    private val movieDao: MovieDao = AppDatabase.getInstance(context).movieDao()
 
     override suspend fun fetchPopularMoviesResponse(page: Int): MoviesResponse {
         return movieApi.fetchMoviesResponse(page = page)

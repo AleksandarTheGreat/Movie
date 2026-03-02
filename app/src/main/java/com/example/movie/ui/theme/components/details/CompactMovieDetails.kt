@@ -43,6 +43,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
@@ -55,7 +56,6 @@ import com.example.movie.data.model.movieDetails.Genre
 import com.example.movie.data.model.movieDetails.ProductionCompany
 import com.example.movie.ui.theme.MovieTheme
 import com.example.movie.ui.theme.viewModel.ViewModelDetails
-import com.example.movie.ui.theme.viewModel.ViewModelDetailsFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -371,11 +371,7 @@ private fun CompactMovieDetailsPreview() {
     MovieTheme {
         CompactMovieDetails(
             movieDetails = MovieDetails(),
-            viewModelDetails = viewModel(
-                factory = ViewModelDetailsFactory(
-                    repositoryMovie = (LocalContext.current.applicationContext as MovieApp).repositoryMovie
-                )
-            )
+            viewModelDetails = hiltViewModel()
         )
     }
 

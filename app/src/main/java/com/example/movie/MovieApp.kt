@@ -3,7 +3,9 @@ package com.example.movie
 import android.app.Application
 import android.util.Log
 import com.example.movie.data.repository.Implementations.RepositoryMovie
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class MovieApp : Application() {
 
     override fun onCreate() {
@@ -11,7 +13,4 @@ class MovieApp : Application() {
         Log.d("Tag", "Application created")
     }
 
-    val repositoryMovie by lazy {
-        RepositoryMovie(context = this)
-    }
 }

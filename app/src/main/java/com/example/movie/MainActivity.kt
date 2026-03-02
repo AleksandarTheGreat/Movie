@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.movie.data.model.ScreenHeightType
 import com.example.movie.data.model.ScreenWidthType
+import com.example.movie.data.repository.GlupaKlasa
 import com.example.movie.ui.theme.MovieTheme
 import com.example.movie.ui.theme.details.ScreenDetails
 import com.example.movie.ui.theme.details.ScreenDetailsGraph
@@ -23,13 +24,21 @@ import com.example.movie.ui.theme.favorites.ScreenFavorites
 import com.example.movie.ui.theme.favorites.ScreenFavoritesGraph
 import com.example.movie.ui.theme.home.ScreenHome
 import com.example.movie.ui.theme.home.ScreenHomeGraph
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var glupaKlasa: GlupaKlasa
 
     @SuppressLint("ConfigurationScreenWidthHeight")
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        glupaKlasa.printNesho()
 
         enableEdgeToEdge()
         setContent {

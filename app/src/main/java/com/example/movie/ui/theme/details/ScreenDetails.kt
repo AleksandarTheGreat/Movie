@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.movie.MovieApp
@@ -31,18 +32,13 @@ import com.example.movie.ui.theme.MovieTheme
 import com.example.movie.ui.theme.components.details.CompactMovieDetails
 import com.example.movie.ui.theme.components.details.EmptyMovieDetails
 import com.example.movie.ui.theme.viewModel.ViewModelDetails
-import com.example.movie.ui.theme.viewModel.ViewModelDetailsFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenDetails(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit,
-    viewModelDetails: ViewModelDetails = viewModel(
-        factory = ViewModelDetailsFactory(
-            repositoryMovie = (LocalContext.current.applicationContext as MovieApp).repositoryMovie
-        )
-    ),
+    viewModelDetails: ViewModelDetails = hiltViewModel(),
     screenWidthType: ScreenWidthType,
     screenHeightType: ScreenHeightType,
     movieId: Int,
