@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -55,6 +56,7 @@ import com.example.movie.data.model.MovieFavorite
 import com.example.movie.data.model.movieDetails.Genre
 import com.example.movie.data.model.movieDetails.ProductionCompany
 import com.example.movie.ui.theme.MovieTheme
+import com.example.movie.ui.theme.components.home.CardMovieGridBigHeight
 import com.example.movie.ui.theme.viewModel.ViewModelDetails
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -65,6 +67,8 @@ fun CompactMovieDetails(
     modifier: Modifier = Modifier,
     movieDetails: MovieDetails,
     viewModelDetails: ViewModelDetails,
+    navigateUp: () -> Unit,
+    navigateToScreenDetails: (id: Int) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -118,6 +122,25 @@ fun CompactMovieDetails(
         )
 
         LazyRowProductionCompanies(movieDetails)
+
+        Spacer(
+            modifier = Modifier
+                .height(12.dp)
+        )
+
+        HeaderForDetailsSubtitle(
+            subtitle = "Related Movies"
+        )
+
+        LazyRowRelatedMovies(
+            navigateUp = navigateUp,
+            navigateToScreenDetails = navigateToScreenDetails,
+            viewModelDetails = viewModelDetails,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .padding(horizontal = 8.dp),
+        )
     }
 }
 
@@ -156,8 +179,19 @@ private fun HeaderOverviewWithHeart(subtitle: String, movieDetails: MovieDetails
                         posterPath = movieDetails.posterPath ?: ""
                     )
 
-                    if (movieExists) { Toast.makeText(context, "'${movieDetails.title}' added to favorites", Toast.LENGTH_SHORT).show() }
-                    else { Toast.makeText(context, "'${movieDetails.title}' removed from favorites", Toast.LENGTH_SHORT).show() }
+                    if (movieExists) {
+                        Toast.makeText(
+                            context,
+                            "'${movieDetails.title}' added to favorites",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "'${movieDetails.title}' removed from favorites",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
 
                     viewModelDetails.toggleFavorite(movieFavorite, movieExists)
                 },
@@ -275,19 +309,30 @@ private fun BoxScope.TitleAndGenresColumn(
                 alignment = Alignment.BottomStart
             ),
     ) {
+        val list = movieDetails.listGenres ?: emptyList()
+        val mod: Modifier
+        if (list.isNotEmpty()) {
+            mod = Modifier.fillMaxWidth()
+                .padding(start = 12.dp, end = 12.dp)
+                .zIndex(2f)
+        }
+        else {
+            mod = Modifier.fillMaxWidth()
+                .padding(all = 12.dp)
+                .zIndex(2f)
+        }
+
         Text(
             text = movieDetails.title ?: "",
             color = Color.White,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 12.dp, end = 12.dp)
-                .zIndex(2f),
+            modifier = mod,
             textAlign = TextAlign.Start,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
         )
+
 
         LazyRow (
             horizontalArrangement = Arrangement.Start,
@@ -364,6 +409,32 @@ private fun BoxScope.DetailsColumn(movieDetails: MovieDetails) {
     }
 }
 
+@Composable
+private fun LazyRowRelatedMovies(
+    modifier: Modifier = Modifier,
+    viewModelDetails: ViewModelDetails,
+    navigateUp: () -> Unit,
+    navigateToScreenDetails: (id: Int) -> Unit,
+) {
+
+    val relatedMoviesList by viewModelDetails.immutableStateFlowRelatedMovies.collectAsStateWithLifecycle()
+
+    LazyRow(
+        modifier = modifier,
+    ) {
+        items(relatedMoviesList, key = { it.id }) { movie ->
+            CardMovieGridBigHeight(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(all = 4.dp)
+                    .width(200.dp),
+                movie = movie,
+                navigateToScreenDetails = navigateToScreenDetails
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
 private fun CompactMovieDetailsPreview() {
@@ -371,8 +442,20 @@ private fun CompactMovieDetailsPreview() {
     MovieTheme {
         CompactMovieDetails(
             movieDetails = MovieDetails(),
-            viewModelDetails = hiltViewModel()
+            viewModelDetails = hiltViewModel(),
+            navigateToScreenDetails = {},
+            navigateUp = {}
         )
     }
 
 }
+
+
+
+
+
+
+
+
+
+

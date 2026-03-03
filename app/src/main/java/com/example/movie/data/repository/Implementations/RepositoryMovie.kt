@@ -1,16 +1,12 @@
 package com.example.movie.data.repository.Implementations
 
-import android.content.Context
 import com.example.movie.data.api.MovieApi
-import com.example.movie.data.api.MovieModule
 import com.example.movie.data.model.MovieDetails
 import com.example.movie.data.model.MovieFavorite
 import com.example.movie.data.model.MoviesResponse
 import com.example.movie.data.repository.IRestApi
 import com.example.movie.data.repository.IRoomApi
-import com.example.movie.data.room.AppDatabase
 import com.example.movie.data.room.MovieDao
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -29,6 +25,10 @@ class RepositoryMovie @Inject constructor(
 
     override suspend fun fetchSearchedMoviesResponse(query: String): MoviesResponse {
         return movieApi.fetchSearchedMoviesResponse(query = query)
+    }
+
+    override suspend fun fetchGenresMoviesResponse(genres: List<Int>): MoviesResponse {
+        return movieApi.fetchGenresMoviesResponse(genres = genres)
     }
 
     override fun loadAllMovieFavorites(query: String): Flow<List<MovieFavorite>> {

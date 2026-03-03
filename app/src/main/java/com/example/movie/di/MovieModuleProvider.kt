@@ -1,6 +1,7 @@
-package com.example.movie.data.api
+package com.example.movie.di
 
 import android.content.Context
+import com.example.movie.data.api.MovieApi
 import com.example.movie.data.room.AppDatabase
 import com.example.movie.data.room.MovieDao
 import dagger.Module
@@ -15,7 +16,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object MovieModule {
+object MovieModuleProvider {
 
     @Provides
     @Singleton
@@ -30,7 +31,7 @@ object MovieModule {
     @Provides
     @Singleton
     fun provideDao(@ApplicationContext context: Context): MovieDao {
-        return AppDatabase
+        return AppDatabase.Companion
             .getInstance(context)
             .movieDao()
     }

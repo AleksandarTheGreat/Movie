@@ -27,4 +27,11 @@ interface MovieApi {
         @Query(value = "api_key") apiKey: String = API_KEY,
         @Query(value = "query") query: String
     ): MoviesResponse
+
+    @GET("discover/movie")
+    suspend fun fetchGenresMoviesResponse(
+        @Query(value = "api_key") apiKey: String = API_KEY,
+        @Query(value = "with_genres") genres: List<Int>,
+    ): MoviesResponse
+
 }

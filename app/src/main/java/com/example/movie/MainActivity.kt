@@ -12,15 +12,15 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.movie.data.model.ScreenHeightType
 import com.example.movie.data.model.ScreenWidthType
-import com.example.movie.data.repository.BindingTest
-import com.example.movie.data.repository.GlupaKlasa
 import com.example.movie.data.repository.IRestApi
+import com.example.movie.data.repository.IRoomApi
 import com.example.movie.data.repository.Implementations.RepositoryMovie
 import com.example.movie.ui.theme.MovieTheme
 import com.example.movie.ui.theme.details.ScreenDetails
@@ -38,10 +38,10 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var glupaKlasa: GlupaKlasa
+    lateinit var iRestApi: IRestApi
 
     @Inject
-    lateinit var iRestApi: IRestApi
+    lateinit var iRoomApi: IRoomApi
 
 
     @SuppressLint("ConfigurationScreenWidthHeight")
@@ -49,18 +49,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        glupaKlasa.printNesho()
-
         enableEdgeToEdge()
         setContent {
-            LaunchedEffect(Unit) {
-                withContext(Dispatchers.IO) {
-                    val result = iRestApi.fetchPopularMoviesResponse(page = 1)
-                    Log.d("Tag", "The result")
-                    Log.d("Tag", result.toString())
-                }
-            }
-
             MovieTheme {
                 val navController = rememberNavController()
 
@@ -94,6 +84,9 @@ class MainActivity : ComponentActivity() {
                                 navController.navigateUp()
                             },
                             movieId = id,
+                            navigateToScreenDetails = { id ->
+                                navController.navigate(ScreenDetailsGraph(id = id))
+                            }
                         )
                     }
 

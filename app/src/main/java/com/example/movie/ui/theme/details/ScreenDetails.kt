@@ -38,6 +38,7 @@ import com.example.movie.ui.theme.viewModel.ViewModelDetails
 fun ScreenDetails(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit,
+    navigateToScreenDetails: (id: Int) -> Unit,
     viewModelDetails: ViewModelDetails = hiltViewModel(),
     screenWidthType: ScreenWidthType,
     screenHeightType: ScreenHeightType,
@@ -88,9 +89,12 @@ fun ScreenDetails(
                 CompactMovieDetails(
                     modifier = Modifier
                         .fillMaxSize()
-                        .verticalScroll(rememberScrollState()),
+                        .verticalScroll(rememberScrollState())
+                        .padding(bottom = 24.dp),
                     movieDetails = movieDetailsState,
                     viewModelDetails = viewModelDetails,
+                    navigateUp = navigateUp,
+                    navigateToScreenDetails = navigateToScreenDetails,
                 )
             }
         }
@@ -103,6 +107,7 @@ private fun ScreenDetailsPreview() {
     MovieTheme {
         ScreenDetails(
             navigateUp = {},
+            navigateToScreenDetails = {},
             screenWidthType = ScreenWidthType.NARROW,
             screenHeightType = ScreenHeightType.SMALL,
             movieId = 0,
